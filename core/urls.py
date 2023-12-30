@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+app_name = 'core'
+
 urlpatterns = [
-    path('', views.TemplateView.as_view(), name='home'),
+    path('', views.Home.as_view(), name='home'),
+    path('data-upload/', views.DataUploadView.as_view(), name='data-upload')
 ]
