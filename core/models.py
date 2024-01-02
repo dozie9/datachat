@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -16,6 +18,7 @@ class Conversation(models.Model):
         (DB, DB)
     )
     title = models.CharField(max_length=250)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user1 = models.ForeignKey(User, on_delete=models.CASCADE)
     attachment = models.FileField(null=True, blank=True, upload_to=user_directory_path)
     connection_string = models.TextField(blank=True, null=True)

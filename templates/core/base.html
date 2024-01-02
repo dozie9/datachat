@@ -3463,7 +3463,9 @@
                     <!-- Chat: Files -->
 
                     <!-- Chat: Form -->
-                    <form class="chat-form rounded-pill bg-dark" data-emoji-form="" method="post" action="">
+                    <form class="chat-form rounded-pill bg-dark" data-emoji-form="" method="post"
+                          action="{% url 'core:data-upload' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
                         <div class="row align-items-center gx-0">
                             <div class="col-auto">
                                 <span class="btn btn-icon btn-link text-body rounded-circle dz-clickable" id="dz-btn">

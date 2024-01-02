@@ -14,17 +14,14 @@ class Home(TemplateView):
 class DataUploadView(FormView):
     http_method_names = ['post']
     form_class = DataUploadForm
-    template_name = 'core/base2.html'
+    template_name = 'core/base.html'
 
     def get_success_url(self):
+        print('get_success_url')
         return '/'
 
-    def get(self, request, *args, **kwargs):
-        # Option 1: Return an HTTP 405 Method Not Allowed response
-        # return HttpResponseNotAllowed(['POST'])
-        return redirect('/')
-
     def form_valid(self, form):
+        print('form_valid')
         attachment = form.cleaned_data['attachment']
         query = 'tell me something about the data. illustrate with graph'
 
