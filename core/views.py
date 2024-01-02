@@ -29,7 +29,8 @@ class DataUploadView(FormView):
         # print(response)
         conversation = Conversation.objects.create(
             attachment=attachment,
-            title='Test title'
+            title='Test title',
+            user1=self.request.user
         )
         Message.objects.create(
             user=self.request.user,
