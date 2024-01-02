@@ -37,7 +37,7 @@ class DataUploadView(FormView):
             conversation=conversation,
             content=response
         )
-        self.request.session['conversation_id'] = conversation.id
+        self.request.session['conversation_id'] = str(conversation.id)
 
         return super().form_valid(form)
 
