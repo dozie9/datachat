@@ -91,12 +91,12 @@ def query_agent(agent, query):
                 the query.
                 
                 Suggest 3 questions about the data. Include the 3 suggested question as a list in the response. for example:
-                "question": ['how many rows are there', 'how manay columns are there', 'what is this data about']
+                "question": ['how many rows are there', 'how many columns are there', 'what is this data about']
                
                 Example of the answer format:
                 {"answer": "The title with the highest rating is 'Gilead'", 
                 "graphs": ["12354_bar.png", "e3422_line.png"], "questions": ['how many rows are there', 'how manay columns are there', 'what is this data about']}
-                or    
+                   
                 If you do not know the answer, reply as follows:
                 {"answer": "I do not know."}
                 
