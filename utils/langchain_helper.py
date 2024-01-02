@@ -33,7 +33,7 @@ if os.environ.get('ENVIRONMENT') == 'local':
         lm = CTransformers(
             model=os.environ.get('MODEL'),
             model_type="mistral",
-            config={'context_length': 1500, 'max_new_tokens': 2028},
+            config={'context_length': 4028, 'max_new_tokens': 2028},
             # temperature=0,
             model_kwargs={"temperature": 0.1, "max_length": 512}
         )
@@ -75,30 +75,33 @@ def create_agent(filename):
     df = get_dataframe(filename)
 
     # Create a Pandas DataFrame agent.
-    return create_pandas_dataframe_agent(llm, df, verbose=True, agent_type=AgentType.OPENAI_FUNCTIONS,
-                                         handle_parsing_errors=True)
+    return create_pandas_dataframe_agent(
+        llm, df, verbose=True, agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        handle_parsing_errors="Check your output and make sure it conforms! Do not output an action and a final answer at the same time."
+    )
 
 
 def query_agent(agent, query):
     prompt = (
             """
-                For the following query, you a to determine the best way to present the answer using the following:
-                if the question requires a graph for illustration, then generate a plot to illustrate the answer. 
-                If any charts or graphs or plots were created save them localy into a folder called images and include 
-                the saved file names in your response.
+                For the following query, you are to determine the best way to present the answer using the following:
+                if the answer to the query can be illustrated in a graph, then generate a plot to illustrate the answer. 
+                If any charts or graphs or plots were created save them a folder called images and include 
+                the saved file names in your response. Do the same if a graph, plot or chart is explicitly requested in 
+                the query.
                 
-                Suggest 3 questions about the data. Include it as a list in the response.
+                Suggest 3 questions about the data. Include the 3 suggested question as a list in the response. for example:
+                "question": ['how many rows are there', 'how manay columns are there', 'what is this data about']
                
-                Example:
+                Example of the answer format:
                 {"answer": "The title with the highest rating is 'Gilead'", 
                 "graphs": ["12354_bar.png", "e3422_line.png"], "questions": ['how many rows are there', 'how manay columns are there', 'what is this data about']}
-    
+                or    
                 If you do not know the answer, reply as follows:
                 {"answer": "I do not know."}
                 
                     
-                All strings in "columns" list and data list, should be in double quotes,  
-                
+                All strings in "columns" list and data list, should be in double quotes,                  
     
                 Lets think step by step.
     

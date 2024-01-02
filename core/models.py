@@ -9,8 +9,17 @@ def user_directory_path(instance, filename):
 
 
 class Conversation(models.Model):
-    tittle = models.CharField(max_length=250)
+    CSV = 'csv'
+    DB = 'db'
+    SOURCE_CHOICE = (
+        (CSV, CSV),
+        (DB, DB)
+    )
+    title = models.CharField(max_length=250)
     user1 = models.ForeignKey(User, on_delete=models.CASCADE)
+    attachment = models.FileField(null=True, blank=True, upload_to=user_directory_path)
+    connection_string = models.TextField(blank=True, null=True)
+    data_type = models.CharField(choices=SOURCE_CHOICE, max_length=200)
 
 
 class Message(models.Model):
@@ -18,7 +27,6 @@ class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField(unique=False, blank=False)
-    attachment = models.FileField(null=True, blank=True, upload_to=user_directory_path)
 
     def __str__(self):
         return self.content[:50]

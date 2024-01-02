@@ -5,5 +5,5 @@ app_name = 'core'
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
-    path('data-upload/', views.DataUploadView.as_view(), name='data-upload')
+    path('data-upload/', views.DataUploadView.as_view(), name='data-upload'),
 ]

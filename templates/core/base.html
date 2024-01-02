@@ -3316,6 +3316,8 @@
                 <div class="chat-body hide-scrollbar flex-1 h-100">
                     <div class="chat-body-inner" style="padding-bottom: 87px">
                         <div class="py-6 py-lg-12">
+                            {% for message in messages %}
+                                {% if message.user %}
 
                             <!-- Message -->
                             <div class="message message-out">
@@ -3329,8 +3331,7 @@
                                     <div class="message-body">
                                         <div class="message-content">
                                             <div class="message-text">
-                                                <p>Hey, Marshall! How are you? Can you please change the color theme
-                                                    of the website to pink and purple? 😂</p>
+                                                <p>{{ message.content }}</p>
                                             </div>
 
                                             <!-- Dropdown -->
@@ -3425,7 +3426,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                                {% else %}
                             <!-- Message -->
                             <div class="message">
                                 <div class="col-auto">
@@ -3438,15 +3439,17 @@
                                     <div class="message-body">
                                         <div class="message-content">
                                             <div class="message-text">
-                                                <p>William is typing<span
-                                                        class="typing-dots"><span>.</span><span>.</span><span>.</span></span>
+                                                <p>{{ message.content }}
+{#                                                    William is typing<span#}
+{#                                                        class="typing-dots"><span>.</span><span>.</span><span>.</span></span>#}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -3460,7 +3463,7 @@
                     <!-- Chat: Files -->
 
                     <!-- Chat: Form -->
-                    <form class="chat-form rounded-pill bg-dark" data-emoji-form="">
+                    <form class="chat-form rounded-pill bg-dark" data-emoji-form="" method="post" action="">
                         <div class="row align-items-center gx-0">
                             <div class="col-auto">
                                 <span class="btn btn-icon btn-link text-body rounded-circle dz-clickable" id="dz-btn">
@@ -3476,8 +3479,21 @@
                             </div>
 
                             <div class="col">
+                                {% if not conversation.data_type %}
                                 <div class="input-group">
-                                        <textarea class="form-control px-0" placeholder="Type your message..." rows="1"
+                                    <input name="attachment" type="file" class="form-control" id="inputGroupFile04"
+                                           aria-describedby="inputGroupFileAddon04"
+                                           accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                           aria-label="Upload">
+                                    {% comment %}
+                                    <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">
+                                        Button
+                                    </button>
+                                    {% endcomment %}
+                                </div>
+                                {% else %}
+                                <div class="input-group">
+                                        <textarea name="query" class="form-control px-0" placeholder="Type your message..." rows="1"
                                                   data-emoji-input="" data-autosize="true"
                                                   style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 47px;"></textarea>
 
@@ -3496,6 +3512,7 @@
                                             </span>
                                     </a>
                                 </div>
+                                {% endif %}
                             </div>
 
                             <div class="col-auto">
