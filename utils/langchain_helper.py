@@ -86,6 +86,7 @@ def query_agent(agent, query):
             """
                 For the following query, you are to determine the best way to present the answer using the following:
                 Answer the query and illustrate your answer with graph or plot.
+                "answer": "answer to the query"
                 
                 Generate graphs or plot to the images folder.
                 Use matplotlib in nongui mode.
@@ -93,15 +94,13 @@ def query_agent(agent, query):
                 Suggest 3 questions about the data. Include the 3 suggested question as a list in the response. for example:
                 "question": ['how many rows are there', 'how many columns are there', 'what is this data about']
                
-                Example of the answer format:
+                Example of the final output json. This is a combination of "answer", "questions" and "graphs":
                 {"answer": "The title with the highest rating is 'Gilead'", 
                 "graphs": ["12354_bar.png", "e3422_line.png"], "questions": ['how many rows are there', 'how manay columns are there', 'what is this data about']}
                    
                 If you do not know the answer, reply as follows:
                 {"answer": "I do not know."}
-                
-                    
-                All strings in "columns" list and data list, should be in double quotes,                  
+                                
     
                 Lets think step by step.
     
