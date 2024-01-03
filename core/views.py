@@ -2,7 +2,7 @@ from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView
 
-from core.forms import DataUploadForm
+from core.forms import DataUploadForm, QueryForm
 from core.models import Conversation, Message
 from utils import langchain_helper
 
@@ -44,16 +44,17 @@ class DataUploadView(FormView):
 
 class FileChatView(FormView):
     # http_method_names = ['post']
-    form_class = DataUploadForm
+    form_class = QueryForm
     template_name = 'core/base.html'
 
     def form_valid(self, form):
         query = form.cleaned_data['query']
+        # print(query)
         # conversation_id = self.request.session.get('conversation_id')
         conversation_id = self.kwargs.get('conversation_id')
         conversation = Conversation.objects.get(id=conversation_id)
 
-        response = langchain_helper.file_query(conversation.attachment.file, query)
+        response = langchain_helper.file_query(conversation.attachment.path, query)
 
         Message.objects.create(
             user=self.request.user,
