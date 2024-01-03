@@ -47,6 +47,9 @@ class FileChatView(FormView):
     form_class = QueryForm
     template_name = 'core/base.html'
 
+    def get_success_url(self):
+        return self.request.path
+
     def form_valid(self, form):
         query = form.cleaned_data['query']
         # print(query)
