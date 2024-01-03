@@ -23,7 +23,7 @@ class DataUploadView(FormView):
     def form_valid(self, form):
         print('form_valid')
         attachment = form.cleaned_data['attachment']
-        query = 'Analyze the data and come up with a meaningful insight. Illustrate this insight with a graph using matplotlib'
+        query = 'Analyze the data and come up with a meaningful insight. Consider all available columns. Illustrate this insight with a graph using matplotlib'
 
         response = langchain_helper.file_query(attachment, query)
         # print(response)

@@ -88,8 +88,8 @@ def query_agent(agent, query):
                 Answer the query and illustrate your answer with graph or plot.
                 "answer": "answer to the query"
                 
+                Make sure to always use matplotlib in non-GUI mode.
                 Generate graphs or plot to the images folder.
-                Use matplotlib in nongui mode.
                 
                 Suggest 3 questions about the data. Include the 3 suggested question as a list in the response. for example:
                 "question": ['how many rows are there', 'how many columns are there', 'what is this data about']
