@@ -1,4 +1,6 @@
 import uuid
+import json
+import re
 
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -24,6 +26,13 @@ class Conversation(models.Model):
     connection_string = models.TextField(blank=True, null=True)
     data_type = models.CharField(choices=SOURCE_CHOICE, max_length=200)
 
+    def get_title(self):
+        return self.attachment.name.split('/',)[-1]
+
+    def get_subtitle(self):
+        first_user_msg = self.message_set.filter(user__isnull=False).first()
+        return first_user_msg.content[:50]
+
 
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -36,3 +45,23 @@ class Message(models.Model):
 
     def __str__(self):
         return self.content[:50]
+
+    def extract_json(self):
+        try:
+            # Regular expression pattern to extract JSON
+            # This pattern assumes the JSON object starts with '{' and ends with '}'
+            # Adjust as needed (e.g., if JSON arrays '[]' are possible)
+            json_pattern = r'{.*}'
+            match = re.search(json_pattern, self.content, re.DOTALL)
+
+            if match:
+                # Extract the JSON string
+                json_str = match.group()
+                # Parse the JSON string
+                json_data = json.loads(json_str)
+                return json_data
+            else:
+                return "No JSON found in the string"
+
+        except Exception as e:
+            return f"Error: {e}"

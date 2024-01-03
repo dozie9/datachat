@@ -1791,13 +1791,13 @@
 
                                             <div class="col">
                                                 <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">{{ convo.title }}</h5>
+                                                    <h5 class="me-auto mb-0">{{ convo.get_title }}</h5>
                                                     <span class="text-muted extra-small ms-2">12:18 PM</span>
                                                 </div>
 
                                                 <div class="d-flex align-items-center">
                                                     <div class="line-clamp me-auto">
-                                                        How many rows are in this...
+                                                        {{ convo.get_subtitle }}...
                                                     </div>
                                                 </div>
                                             </div>
@@ -3436,7 +3436,7 @@
                                     <div class="message-body">
                                         <div class="message-content">
                                             <div class="message-text">
-                                                <p>{{ message.content }}
+                                                <p>{{ message.extract_json.answer }}
 {#                                                    William is typing<span#}
 {#                                                        class="typing-dots"><span>.</span><span>.</span><span>.</span></span>#}
                                                 </p>
