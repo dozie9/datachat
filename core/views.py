@@ -60,14 +60,14 @@ class FileChatView(FormView):
         response = langchain_helper.file_query(conversation.attachment.path, query)
 
         Message.objects.create(
-            # user=self.request.user,
-            conversation=conversation,
-            content=response
-        )
-        Message.objects.create(
             user=self.request.user,
             conversation=conversation,
             content=query
+        )
+        Message.objects.create(
+            # user=self.request.user,
+            conversation=conversation,
+            content=response
         )
         # self.request.session['conversation_id'] = conversation.id
 

@@ -31,5 +31,8 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField(unique=False, blank=False)
 
+    class Meta:
+        ordering = ['-timestamp']
+
     def __str__(self):
         return self.content[:50]

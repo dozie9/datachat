@@ -1781,21 +1781,17 @@
                             <!-- Chats -->
                             <div class="card-list">
 
-
+                                {% for convo in CONVERSATIONS %}
                                 <!-- Card -->
-                                <a href="{% static '' %}Messenger - 2.2.0.html"
+                                <a href="{% url 'core:file-chat' convo.id %}"
                                    class="card border-0 text-reset">
                                     <div class="card-body">
                                         <div class="row gx-5">
-                                            <div class="col-auto">
-                                                <div class="avatar avatar-online">
-                                                    <span class="avatar-text">M</span>
-                                                </div>
-                                            </div>
+
 
                                             <div class="col">
                                                 <div class="d-flex align-items-center mb-3">
-                                                    <h5 class="me-auto mb-0">Tittle Placeholder</h5>
+                                                    <h5 class="me-auto mb-0">{{ convo.title }}</h5>
                                                     <span class="text-muted extra-small ms-2">12:18 PM</span>
                                                 </div>
 
@@ -1809,6 +1805,7 @@
                                     </div><!-- .card-body -->
                                 </a>
                                 <!-- Card -->
+                                {% endfor %}
 
                                 <!-- Card -->
                                 <a href="https://offsetcode.com/themes/messenger/2.2.0/chat-direct.html"
