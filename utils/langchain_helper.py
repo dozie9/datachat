@@ -85,10 +85,10 @@ def query_agent(agent, query):
     prompt = (
             """
                 For the following query, you are to determine the best way to present the answer using the following:
-                if the answer to the query can be illustrated in a graph, then generate a plot to illustrate the answer. 
-                If any charts or graphs or plots were created save them a folder called images and include 
-                the saved file names in your response. Do the same if a graph, plot or chart is explicitly requested in 
-                the query.
+                Answer the query and illustrate your answer with graph or plot.
+                
+                Generate graphs or plot to the images folder.
+                Use matplotlib in nongui mode.
                 
                 Suggest 3 questions about the data. Include the 3 suggested question as a list in the response. for example:
                 "question": ['how many rows are there', 'how many columns are there', 'what is this data about']
