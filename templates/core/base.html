@@ -3464,7 +3464,7 @@
 
                     <!-- Chat: Form -->
                     <form class="chat-form rounded-pill bg-dark" data-emoji-form="" method="post"
-                          action="{% url 'core:data-upload' %}" enctype="multipart/form-data">
+                          action="{% if conversation %}{% url 'core:file-chat' conversation.id %}{% else %}{% url 'core:data-upload' %}{% endif %}" enctype="multipart/form-data">
                     {% csrf_token %}
                         <div class="row align-items-center gx-0">
                             <div class="col-auto">
