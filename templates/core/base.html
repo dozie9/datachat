@@ -1781,6 +1781,7 @@
                             <!-- Chats -->
                             <div class="card-list">
 
+                                {% if CONVERSATIONS.exists %}
                                 {% for convo in CONVERSATIONS %}
                                     <!-- Card -->
                                     <a href="{% url 'core:file-chat' convo.id %}"
@@ -1806,7 +1807,7 @@
                                     </a>
                                     <!-- Card -->
                                 {% endfor %}
-
+                                {% endif %}
                                 <!-- Card -->
                                 <a href="https://offsetcode.com/themes/messenger/2.2.0/chat-direct.html"
                                    class="card border-0 text-reset">
