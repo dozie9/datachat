@@ -81,27 +81,27 @@ def create_agent(filename):
     )
 
 
-def query_agent(agent, query):
+def query_agent(agent, query, msg=None):
     prompt = (
-            """
+            f"""
                 For the following query, you are to determine the best way to present the answer using the following:
                 Answer the query and illustrate your answer with graph or plot.
                 "answer": "answer to the query"
                 
                 Make sure to always use matplotlib in non-GUI mode.
-                Generate graphs or plot to the images folder.
+                Generate graphs or plot to the {msg.conversation.id}/{msg.id} folder.
                 
                 Suggest 3 questions about the data. Include the 3 suggested question as a list in the response. for example:
-                "question": ['how many rows are there', 'how many columns are there', 'what is this data about']
+                "question": ["how many rows are there", "how many columns are there", "what is this data about"]
                
                 Example of the final output json. This is a combination of "answer", "questions" and "graphs":
                 {"answer": "The title with the highest rating is 'Gilead'", 
-                "graphs": ["12354_bar.png", "e3422_line.png"], "questions": ['how many rows are there', 'how manay columns are there', 'what is this data about']}
+                "graphs": ["12354_bar.png", "e3422_line.png"], "questions": ["how many rows are there", "how manay columns are there', 'what is this data about"]}
                    
                 If you do not know the answer, reply as follows:
                 {"answer": "I do not know."}
                                 
-    
+                All strings in "questions" list and "graph" list, should be in double quotes,
                 Lets think step by step.
     
                 Below is the query.
@@ -117,10 +117,10 @@ def query_agent(agent, query):
     return response.__str__()
 
 
-def file_query(file_path, query):
+def file_query(file_path, query, msg=None):
     agent = create_agent(file_path)
 
-    response = query_agent(agent, query)
+    response = query_agent(agent, query, msg)
 
     return response
 
