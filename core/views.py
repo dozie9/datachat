@@ -36,7 +36,7 @@ class DataUploadView(FormView):
             conversation=conversation,
             # content=response
         )
-        response = langchain_helper.file_query(attachment, query, msg)
+        response = langchain_helper.file_query(conversation.attachment.path, query, msg)
         msg.content = response
         msg.save()
         self.request.session['conversation_id'] = str(conversation.id)

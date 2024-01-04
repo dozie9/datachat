@@ -89,17 +89,17 @@ def query_agent(agent, query, msg=None):
                 "answer": "answer to the query"
                 
                 Make sure to always use matplotlib in non-GUI mode.
-                Generate graphs or plot to the {msg.conversation.id}/{msg.id} folder.
+                Generate graphs or plot to the "images/{msg.conversation.id}/{msg.id}" folder.
                 
                 Suggest 3 questions about the data. Include the 3 suggested question as a list in the response. for example:
                 "question": ["how many rows are there", "how many columns are there", "what is this data about"]
                
                 Example of the final output json. This is a combination of "answer", "questions" and "graphs":
-                {"answer": "The title with the highest rating is 'Gilead'", 
-                "graphs": ["12354_bar.png", "e3422_line.png"], "questions": ["how many rows are there", "how manay columns are there', 'what is this data about"]}
+                {{"answer": "The title with the highest rating is 'Gilead'", 
+                "graphs": ["12354_bar.png", "e3422_line.png"], "questions": ["how many rows are there", "how manay columns are there', 'what is this data about"]}}
                    
                 If you do not know the answer, reply as follows:
-                {"answer": "I do not know."}
+                {{"answer": "I do not know."}}
                                 
                 All strings in "questions" list and "graph" list, should be in double quotes,
                 Lets think step by step.
@@ -109,6 +109,7 @@ def query_agent(agent, query, msg=None):
                 """
             + query
     )
+    print(prompt)
 
     # Run the prompt through the agent.
     response = agent.run(prompt)
