@@ -48,6 +48,9 @@ class Message(models.Model):
 
     def extract_json(self):
         try:
+            return json.loads(self.content)
+        except json.JSONDecodeError:
+
             # Regular expression pattern to extract JSON
             # This pattern assumes the JSON object starts with '{' and ends with '}'
             # Adjust as needed (e.g., if JSON arrays '[]' are possible)
