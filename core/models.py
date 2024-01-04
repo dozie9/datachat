@@ -25,13 +25,17 @@ class Conversation(models.Model):
     attachment = models.FileField(null=True, blank=True, upload_to=user_directory_path)
     connection_string = models.TextField(blank=True, null=True)
     data_type = models.CharField(choices=SOURCE_CHOICE, max_length=200)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def get_title(self):
         return self.attachment.name.split('/',)[-1]
 
     def get_subtitle(self):
         first_user_msg = self.message_set.filter(user__isnull=False).first()
-        return first_user_msg.content[:50]
+        content = first_user_msg.extract_json()
+        if content == "NA":
+            return first_user_msg.content
+        return first_user_msg.extract_json()['answer'][:50]
 
 
 class Message(models.Model):
@@ -64,7 +68,14 @@ class Message(models.Model):
                 json_data = json.loads(json_str)
                 return json_data
             else:
-                return "No JSON found in the string"
+                return "NA"
 
         except Exception as e:
             return f"Error: {e}"
+
+    @property
+    def images(self):
+        try:
+            return self.extract_json()['graphs']
+        except TypeError:
+            return []
