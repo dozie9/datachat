@@ -17,8 +17,8 @@ load_dotenv()
 project = os.environ.get("PROJECT") # "protected-00-349215"
 dataset = os.environ.get("DATASET") # "interventions_output"
 table = os.environ.get("TABLE") # "feed_prepared"
-service_account_file = os.environ.get("G_SERVICE_KEY")
-sqlalchemy_url = f'bigquery://{project}/{dataset}?credentials_path={service_account_file}'
+# service_account_file = os.environ.get("G_SERVICE_KEY")
+# sqlalchemy_url = f'bigquery://{project}/{dataset}?credentials_path={service_account_file}'
 
 
 # def data_test():
@@ -126,7 +126,11 @@ def file_query(file_path, query, msg=None):
     return response
 
 
-def sql_query(query):
+def sql_query(query, table_name):
+    project_id, dataset_id, table_name = table_name.split('.')
+    service_account_file = os.environ.get("G_SERVICE_KEY")
+    sqlalchemy_url = f'bigquery://{project_id}/{dataset_id}?credentials_path={service_account_file}'
+
     # Set up langchain
     db = SQLDatabase.from_uri(sqlalchemy_url)
     # llm = OpenAI(temperature=0, model="text-davinci-003")
@@ -137,8 +141,8 @@ def sql_query(query):
         llm=llm,
         toolkit=toolkit,
         verbose=True,
-        agent_type=AgentType.OPENAI_FUNCTIONS,
-        # agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        # agent_type=AgentType.OPENAI_FUNCTIONS,
+        agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
         top_k=1000
     )
 

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import TemplateView, FormView
 
-from core.forms import DataUploadForm, QueryForm
+from core.forms import DataUploadForm, QueryForm, DBForm
 from core.models import Conversation, Message
 from utils import langchain_helper
 
@@ -76,7 +76,10 @@ class FileChatView(FormView):
             conversation=conversation,
             # content=response
         )
-        response = langchain_helper.file_query(ai_msg.conversation.attachment.path, query, ai_msg)
+        if conversation.data_type == Conversation.DB:
+            response = langchain_helper.sql_query(query, conversation.connection_string)
+        else:
+            response = langchain_helper.file_query(ai_msg.conversation.attachment.path, query, ai_msg)
         ai_msg.content = response
         ai_msg.save()
 
@@ -92,3 +95,39 @@ class FileChatView(FormView):
             'messages': conversation.message_set.all()
         })
         return ctx
+
+
+class CreateDBConvoView(FormView):
+    form_class = DBForm
+    template_name = 'core/base.html'
+    http_method_names = ['post']
+
+    def form_valid(self, form):
+        table_name = form.cleaned_data['connection_string']
+        # query = 'Analyze the data and come up with a meaningful insight. Consider all columns.' # Illustrate this insight with a graph using matplotlib'
+        query = f'Tell me something about {table_name}'
+        # print(response)
+        conversation = Conversation.objects.create(
+            title='Test title',
+            user1=self.request.user,
+            connection_string=table_name,
+            data_type=Conversation.DB
+        )
+        user_msg = Message.objects.create(
+            user=self.request.user,
+            conversation=conversation,
+            content=table_name
+        )
+
+        ai_msg = Message.objects.create(
+            # user=self.request.user,
+            conversation=conversation,
+            # content=conversation.attachment.name
+        )
+        response = langchain_helper.sql_query(conversation.attachment.path, query)
+        ai_msg.content = response
+        ai_msg.save()
+        # self.request.session['conversation_id'] = str(conversation.id)
+
+        return redirect(reverse('core:file-chat', args=[conversation.id]))
+
