@@ -3494,9 +3494,7 @@
 
                     <!-- Chat: Form -->
                     <form class="chat-form rounded-pill bg-dark" data-emoji-form="" method="post"
-                          action="
-
-                                  {% if conversation %}{% url 'core:file-chat' conversation.id %}{% else %}{% url 'core:data-upload' %}{% endif %}"
+                          action="{% if conversation %}{% url 'core:file-chat' conversation.id %}{% else %}{% url 'core:data-upload' %}{% endif %}"
                           enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row align-items-center gx-0">
@@ -3528,7 +3526,7 @@
                                     </div>
                                 {% else %}
                                     <div class="input-group">
-                                        <textarea name="query" class="form-control px-0"
+                                        <textarea name="query" required id="query" class="form-control px-0"
                                                   placeholder="Type your message..." rows="1"
                                                   data-emoji-input="" data-autosize="true"
                                                   style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 47px;"></textarea>
@@ -11830,7 +11828,7 @@
 </div>
 <input type="file" multiple="multiple" class="dz-hidden-input" tabindex="-1"
        style="visibility: hidden; position: absolute; top: 0px; left: 0px; height: 0px; width: 0px;">
-
+{% include 'core/js.html' %}
 </body>
 
 </html>
