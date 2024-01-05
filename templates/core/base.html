@@ -810,10 +810,14 @@
                                                 <div class="message-body">
                                                     <div class="message-content">
                                                         <div class="message-text">
+                                                            {% if conversation.data_type == conversation.DB %}
+                                                                <p>{{ message.content }}</p>
+                                                            {% else %}
                                                             <p>{{ message.extract_json.answer }}
                                                                 {#                                                    William is typing<span#}
                                                                 {#                                                        class="typing-dots"><span>.</span><span>.</span><span>.</span></span>#}
                                                             </p>
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                     <div class="message-gallery">
