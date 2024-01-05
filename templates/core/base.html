@@ -861,6 +861,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <form method="post" action="{% url 'core:connect-db' %}">
+                                                {% csrf_token %}
                                                 <div class="mb-3">
                                                     <label for="exampleInputEmail1" class="form-label">Table name
                                                         </label>
