@@ -65,19 +65,21 @@ class FileChatView(FormView):
         # conversation_id = self.request.session.get('conversation_id')
         conversation_id = self.kwargs.get('conversation_id')
         conversation = Conversation.objects.get(id=conversation_id)
-
-        response = langchain_helper.file_query(conversation.attachment.path, query)
-
         Message.objects.create(
             user=self.request.user,
             conversation=conversation,
             content=query
         )
-        Message.objects.create(
+
+        ai_msg = Message.objects.create(
             # user=self.request.user,
             conversation=conversation,
-            content=response
+            # content=response
         )
+        response = langchain_helper.file_query(ai_msg.conversation.attachment.path, query, ai_msg)
+        ai_msg.content = response
+        ai_msg.save()
+
         # self.request.session['conversation_id'] = conversation.id
 
         return super().form_valid(form)
