@@ -26,7 +26,7 @@ class Conversation(models.Model):
     connection_string = models.TextField(blank=True, null=True)
     data_type = models.CharField(choices=SOURCE_CHOICE, max_length=200)
     timestamp = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def get_title(self):
         return self.attachment.name.split('/',)[-1]
