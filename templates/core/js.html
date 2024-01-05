@@ -1,0 +1,16 @@
+<script>
+    function submitOnEnter(event) {
+    if (event.which === 13 && !event.shiftKey) {
+        if (!event.repeat) {
+            //const newEvent = new Event("submit", {cancelable: true});
+            //event.target.form.dispatchEvent(newEvent);
+            event.target.form.requestSubmit()
+        }
+
+        event.preventDefault(); // Prevents the addition of a new line in the text field
+    }
+}
+    {% if conversation %}
+document.getElementById("query").addEventListener("keydown", submitOnEnter);
+    {% endif %}
+</script>
