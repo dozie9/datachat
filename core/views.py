@@ -124,7 +124,7 @@ class CreateDBConvoView(FormView):
             conversation=conversation,
             # content=conversation.attachment.name
         )
-        response = langchain_helper.sql_query(conversation.attachment.path, query)
+        response = langchain_helper.sql_query(table_name, query)
         ai_msg.content = response
         ai_msg.save()
         # self.request.session['conversation_id'] = str(conversation.id)
