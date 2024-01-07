@@ -84,5 +84,5 @@ class Message(models.Model):
     def images(self):
         try:
             return self.extract_json()['graphs']
-        except TypeError:
+        except (TypeError, KeyError):
             return []
