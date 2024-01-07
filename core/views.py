@@ -77,7 +77,7 @@ class FileChatView(FormView):
             # content=response
         )
         if conversation.data_type == Conversation.DB:
-            response = langchain_helper.sql_query(query, conversation.connection_string)
+            response = langchain_helper.sql_query(query, conversation.connection_string, ai_msg)
         else:
             response = langchain_helper.file_query(ai_msg.conversation.attachment.path, query, ai_msg)
         ai_msg.content = response
@@ -124,7 +124,7 @@ class CreateDBConvoView(FormView):
             conversation=conversation,
             # content=conversation.attachment.name
         )
-        response = langchain_helper.sql_query(query, table_name)
+        response = langchain_helper.sql_query(query, table_name, ai_msg)
         ai_msg.content = response
         ai_msg.save()
         # self.request.session['conversation_id'] = str(conversation.id)

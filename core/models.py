@@ -51,6 +51,12 @@ class Message(models.Model):
     def __str__(self):
         return self.content[:50]
 
+    def get_answer(self):
+        try:
+            return self.extract_json()['answer']
+        except TypeError:
+            return self.content
+
     def extract_json(self):
         try:
             return json.loads(self.content)

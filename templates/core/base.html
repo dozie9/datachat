@@ -811,9 +811,9 @@
                                                     <div class="message-content">
                                                         <div class="message-text" style="white-space: pre-line;">
                                                             {% if conversation.data_type == conversation.DB %}
-                                                                <p>{{ message.content }}</p>
+                                                                <p>{{ message.get_answer }}</p>
                                                             {% else %}
-                                                            <p>{{ message.extract_json.answer }}
+                                                            <p>{{ message.get_answer }}
                                                                 {#                                                    William is typing<span#}
                                                                 {#                                                        class="typing-dots"><span>.</span><span>.</span><span>.</span></span>#}
                                                             </p>

@@ -126,7 +126,40 @@ def file_query(file_path, query, msg=None):
     return response
 
 
-def sql_query(query, table_name):
+def get_sql_prompt(table_name, query, msg=None):
+    prompt = (
+            f"""
+                For the following query, you are to determine the best way to present the answer using the following:
+                There query will be about {table_name}.
+                Answer the query and illustrate your answer with graph or plot.
+                "answer": "answer to the query"
+
+                Make sure to always use matplotlib in non-GUI mode.
+                Generate graphs or plot to the "images/{msg.conversation.id}/{msg.id}" folder.
+
+                Suggest 3 questions about the data. Include the 3 suggested question as a list in the response. for example:
+                "question": ["how many rows are there", "how many columns are there", "what is this data about"]
+
+                Example of the final output json. This is a combination of "answer", "questions" and "graphs":
+                {{"answer": "The title with the highest rating is 'Gilead'", 
+                "graphs": ["12354_bar.png", "e3422_line.png"], "questions": ["how many rows are there", "how manay columns are there', 'what is this data about"]}}
+
+                If you do not know the answer, reply as follows:
+                {{"answer": "I do not know."}}
+
+                All strings in "questions" list and "graph" list, should be in double quotes,
+                Lets think step by step.
+
+                Below is the query.
+                Query: 
+                """
+            + query
+    )
+
+    return prompt
+
+
+def sql_query(query, table_name, msg):
     project_id, dataset_id, table_name = table_name.split('.')
     service_account_file = os.environ.get("G_SERVICE_KEY")
     sqlalchemy_url = f'bigquery://{project_id}/{dataset_id}?credentials_path={service_account_file}'
@@ -145,6 +178,8 @@ def sql_query(query, table_name):
         agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
         top_k=1000
     )
+
+    prompt = get_sql_prompt(table_name, query, msg)
 
     response = agent_executor.run(query)
     # print(response)
