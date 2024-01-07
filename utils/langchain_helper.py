@@ -181,7 +181,7 @@ def sql_query(query, table_name, msg):
 
     prompt = get_sql_prompt(table_name, query, msg)
 
-    response = agent_executor.run(query)
+    response = agent_executor.run(prompt)
     # print(response)
     return response
 
