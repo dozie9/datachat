@@ -1,7 +1,7 @@
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 
 from core.forms import DataUploadForm, QueryForm, DBForm
 from core.models import Conversation, Message
@@ -9,13 +9,13 @@ from utils import langchain_helper
 
 
 class Home(TemplateView):
-    template_name = 'core/base.html'
+    template_name = 'core/home.html'
 
 
 class DataUploadView(FormView):
     http_method_names = ['post']
     form_class = DataUploadForm
-    template_name = 'core/base.html'
+    template_name = 'core/chat.html'
 
     # def get_success_url(self):
     #     print('get_success_url')
@@ -54,7 +54,7 @@ class DataUploadView(FormView):
 class FileChatView(FormView):
     # http_method_names = ['post']
     form_class = QueryForm
-    template_name = 'core/base.html'
+    template_name = 'core/chat.html'
 
     def get_success_url(self):
         return self.request.path
@@ -99,7 +99,7 @@ class FileChatView(FormView):
 
 class CreateDBConvoView(FormView):
     form_class = DBForm
-    template_name = 'core/base.html'
+    template_name = 'core/chat.html'
     http_method_names = ['post']
 
     def form_valid(self, form):
@@ -131,3 +131,10 @@ class CreateDBConvoView(FormView):
 
         return redirect(reverse('core:file-chat', args=[conversation.id]))
 
+
+class MessageListView(ListView):
+    template_name = 'core/messages.html'
+
+    def get_queryset(self):
+        conversation_id = self.kwargs.get('conversation_id')
+        return Message.objects.filter(conversation__id=conversation_id)

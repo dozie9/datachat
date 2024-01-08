@@ -8,4 +8,5 @@ urlpatterns = [
     path('data-upload/', views.DataUploadView.as_view(), name='data-upload'),
     path('connect-db/', views.CreateDBConvoView.as_view(), name='connect-db'),
     path('convo/<conversation_id>/', views.FileChatView.as_view(), name='file-chat'),
+    path('<conversation_id>/messages/', views.MessageListView.as_view(), name='messages')
 ]
