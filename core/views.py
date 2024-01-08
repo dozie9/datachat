@@ -57,7 +57,8 @@ class FileChatView(FormView):
     template_name = 'core/chat.html'
 
     def get_success_url(self):
-        return self.request.path
+        conversation_id = self.kwargs.get('conversation_id')
+        return reverse('core:messages', args=[conversation_id])
 
     def form_valid(self, form):
         query = form.cleaned_data['query']
