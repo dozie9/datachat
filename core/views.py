@@ -85,7 +85,7 @@ class FileChatView(FormView):
 
         # self.request.session['conversation_id'] = conversation.id
 
-        return super().form_valid(form)
+        return redirect(reverse('core:messages', args=[conversation.id]))
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
