@@ -384,7 +384,7 @@
 {% endblock %}
 
 {% block chat_form %}
-    <form class="chat-form rounded-pill bg-dark" data-emoji-form="" method="post"
+    <form id="chat-form" class="chat-form rounded-pill bg-dark" data-emoji-form="" method="post"
           hx-target="#chat-container" hx-swap="outerHTML"
           hx-post="
                   {% if conversation %}{% url 'core:file-chat' conversation.id %}{% else %}{% url 'core:data-upload' %}{% endif %}"

@@ -109,7 +109,7 @@ def query_agent(agent, query, msg=None):
                 """
             + query
     )
-    print(prompt)
+    # print(prompt)
 
     # Run the prompt through the agent.
     response = agent.run(prompt)
