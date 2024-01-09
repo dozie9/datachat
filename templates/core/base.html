@@ -537,6 +537,14 @@
 </head>
 
 <body>
+{% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
 <!-- Layout -->
 <div class="layout overflow-hidden">
     <!-- Navigation -->
@@ -552,18 +560,6 @@
             <img src="{% static 'loading.svg' %}" title="Loading" class="img-responsive center-block"/>
         </div>
     </div>
-    {% if messages %}
-        <div class="container mt-4">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
     <!-- Chat -->
     {% block content %}{% endblock %}
 

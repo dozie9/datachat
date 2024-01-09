@@ -97,7 +97,7 @@ class FileChatView(FormView):
         conversation = Conversation.objects.get(id=self.kwargs.get('conversation_id'))
         ctx.update({
             'conversation': conversation,
-            'messages': conversation.message_set.all()
+            'message_list': conversation.message_set.all()
         })
         return ctx
 
