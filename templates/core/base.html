@@ -547,7 +547,23 @@
     <!-- Sidebar -->
     {% include 'core/sidebar.html' %}
     <!-- Sidebar -->
-
+    <div id="main-loading" class="loading-overlay" style="display:none;">
+        <div class="inner">
+            <img src="{% static 'loading.svg' %}" title="Loading" class="img-responsive center-block"/>
+        </div>
+    </div>
+    {% if messages %}
+        <div class="container mt-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <!-- Chat -->
     {% block content %}{% endblock %}
 

@@ -141,12 +141,12 @@
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form method="post" action="{% url 'core:connect-db' %}">
+                                            <form class="start-conversation" method="post" action="{% url 'core:connect-db' %}">
                                                 {% csrf_token %}
                                                 <div class="mb-3">
                                                     <label for="exampleInputEmail1" class="form-label">Table name
                                                     </label>
-                                                    <input type="text" name="connection_string" class="form-control"
+                                                    <input required type="text" name="connection_string" class="form-control"
                                                            id="table-name"
                                                            required aria-describedby="emailHelp">
                                                     <div id="tableNameHelp" class="form-text">
@@ -180,7 +180,7 @@
                                                     aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form method="post" action="{% url 'core:data-upload' %}" enctype="multipart/form-data">
+                                            <form id="data-upload" class="start-conversation" method="post" action="{% url 'core:data-upload' %}" enctype="multipart/form-data">
                                                 {% csrf_token %}
                                                 <div class="mb-3">
                                                     {% comment %}
@@ -196,7 +196,7 @@
                                                     <label for="inputGroupFile04" class="form-label">Data file
                                                     </label>{% endcomment %}
                                                     <div class="input-group">
-                                                        <input name="attachment" type="file" class="form-control"
+                                                        <input required name="attachment" type="file" class="form-control"
                                                                id="inputGroupFile04"
                                                                aria-describedby="inputGroupFileAddon04"
                                                                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"

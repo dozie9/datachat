@@ -29,6 +29,7 @@
         document.getElementById("query").addEventListener("keydown", submitOnEnter);
         document.getElementById("chat-form").addEventListener('submit', (event) => {
             event.preventDefault()
+            console.log('submitting...')
             event.target.setAttribute('inert', '')
 
             let hiddenInMessage = document.getElementById('hidden-in')
@@ -40,7 +41,7 @@
             hiddenInMessage.style.display = 'flex'
             hiddenInMessage.scrollIntoView({behavior: 'smooth', block: 'end'});
 
-            event.target.requestSubmit()
+            //event.target.requestSubmit()
             //textarea.value = ''
         })
 
@@ -68,4 +69,24 @@
             document.getElementById('chat-form').removeAttribute('inert')
         }
     });
+    // display loading icon on file upload and db setup
+
+    document.querySelectorAll('.start-conversation').forEach(function (formDom) {
+        console.log(formDom)
+        formDom.addEventListener('submit', function (e) {
+            //e.preventDefault()
+            //console.log(e.target)
+            document.getElementById('main-loading').style.display = 'block'
+            //formDom.requestSubmit();
+            //const newEvent = new Event("submit", {cancelable: true});
+            //e.target.dispatchEvent(newEvent);
+            //e.target.submit()
+        })
+    })
+    /*document.getElementById('data-upload').addEventListener('submit', function (event) {
+        //event.preventDefault()
+        console.log(event.target)
+        document.getElementById('main-loading').style.display = 'block'
+        //event.target.requestSubmit();
+    })*/
 </script>
