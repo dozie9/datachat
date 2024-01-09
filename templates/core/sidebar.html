@@ -1238,7 +1238,7 @@
                             <!-- Chats -->
                             <div class="card-list">
 
-                                {% if CONVERSATIONS.exists %}
+                                {% if user.is_authenticated %}
                                     {% for convo in CONVERSATIONS %}
                                         <!-- Card -->
                                         <a href="{% url 'core:file-chat' convo.id %}"
