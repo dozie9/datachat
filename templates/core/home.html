@@ -119,8 +119,9 @@
 
                             <div class="d-flex justify-content-center align-items-center vh-100">
                                 <!-- Button trigger modal -->
-                                <a class="btn btn-primary me-4" data-bs-toggle="modal"
-                                   data-bs-target="#fileChatModal">
+                                <a href="{% url 'core:data-upload' %}" class="btn btn-primary me-4" data-bs-toggle="modal"
+                                   data-bs-target="#fileChatModal"
+                                >
                                     Chat a file
                                 </a>
                                 <button type="button" class="btn btn-primary ms-4" data-bs-toggle="modal"
@@ -168,6 +169,60 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal fade" id="fileChatModal" tabindex="-1"
+                                 aria-labelledby="fileChatModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="fileChatModalLabel">File</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{% url 'core:data-upload' %}" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <div class="mb-3">
+                                                    {% comment %}
+                                                    <label for="exampleInputEmail1" class="form-label">Table name
+                                                    </label>
+                                                    <input type="text" name="connection_string" class="form-control"
+                                                           id="table-name"
+                                                           required aria-describedby="emailHelp">
+                                                    <div id="tableNameHelp" class="form-text">
+                                                        Please enter a qualified table name, eg.:
+                                                        project_id.dataset_id.table_name
+                                                    </div>
+                                                    <label for="inputGroupFile04" class="form-label">Data file
+                                                    </label>{% endcomment %}
+                                                    <div class="input-group">
+                                                        <input name="attachment" type="file" class="form-control"
+                                                               id="inputGroupFile04"
+                                                               aria-describedby="inputGroupFileAddon04"
+                                                               accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                                               aria-label="Upload">
+
+                                                    </div>
+                                                    <div id="attachmentHelp" class="form-text">
+                                                        Upload an excel or csv file to begin chat.
+                                                    </div>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </form>
+                                        </div>
+                                        {% comment %}
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                        {% endcomment %}
+                                    </div>
+                                </div>
+                            </div>
+
                         {% endblock %}
                     </div>
 
@@ -182,7 +237,7 @@
                     <!-- Chat: Files -->
 
                     <!-- Chat: Form -->
-                {% block chat_form %}
+                    {% block chat_form %}
 
                     {% endblock %}
                     <!-- Chat: Form -->
