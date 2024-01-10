@@ -2908,10 +2908,7 @@
 </div>
 
 <!-- Scripts -->
-{% comment %}
-<script src="{% static '' %}vendor.js"></script>
-<script src="{% static '' %}template.js"></script>
-{% endcomment %}
+
 <div class="emoji-picker__wrapper" style="display: none; z-index: 1041;">
     <div class="emoji-picker light"
          style="--emoji-per-row: 10; --row-count: 8; --emoji-size: 1.125rem; --category-button-height: 0;">
@@ -8826,6 +8823,10 @@
 {% include 'core/js.html' %}
 {% block js %}
 {% endblock %}
+
+<script src="{% static '' %}vendor.js"></script>
+<script src="{% static '' %}template.js"></script>
+
 </body>
 
 </html>
