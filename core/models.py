@@ -83,6 +83,8 @@ class Message(models.Model):
     @property
     def images(self):
         try:
-            return self.extract_json()['graphs']
+            graphs = self.extract_json()['graphs']
+            graphs = [x.split('/')[-1] for x in graphs]
+            return graphs
         except (TypeError, KeyError):
             return []
