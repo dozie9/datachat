@@ -63,8 +63,9 @@ def get_memory(conversation_id):
 
 def pd_agent_with_memory(llm_code, df, msg):
     memory = get_memory(str(msg.conversation.id))
+    path_to_image = f"images/{msg.conversation.id}/{msg.id}"
 
-    PREFIX = """
+    PREFIX = f"""
     You are working with a pandas dataframe in Python. The name of the dataframe is `df`.
     You should use the tools below to answer the question posed of you:
     
@@ -83,7 +84,7 @@ def pd_agent_with_memory(llm_code, df, msg):
     }}
     
     Summary of the whole conversation:
-    {chat_history}
+    {{chat_history}}
     """
 
     pd_agent = create_pandas_dataframe_agent(
@@ -92,7 +93,7 @@ def pd_agent_with_memory(llm_code, df, msg):
         prefix=PREFIX,
         verbose=True,
         agent_executor_kwargs={"memory": memory},
-        input_variables=['df_head', 'input', 'agent_scratchpad', 'chat_history', 'path_to_image'],
+        input_variables=['df_head', 'input', 'agent_scratchpad', 'chat_history'],
         handle_parsing_errors="Check your output and make sure it conforms! Do not output an action and a final answer at the same time."
     )
     return pd_agent
@@ -194,7 +195,7 @@ def file_query(file_path, query, msg=None):
     if not query:
         query = 'Analyze the provided dataset [describe the dataset briefly] and present a detailed summary'
     # response = agent_mem.run(input=query, path_to_image=f"images/{msg.conversation.id}/{msg.id}")
-    response = agent_mem.invoke({'input': query, 'path_to_image': f"images/{msg.conversation.id}/{msg.id}"})
+    response = agent_mem.run(query)
 
     return response
 
