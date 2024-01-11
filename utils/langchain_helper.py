@@ -76,16 +76,17 @@ def pd_agent_with_memory(llm_code, df, msg):
     mpl.use('Agg')
     import matplotlib.pyplot as plt
     
-    Include the file paths of the generated graphs in your response. Format the response as follows:
-    {{
+    Include the file paths of the generated graphs in your response. Format is a json response as follows:
+    
     "answer": "Your answer",
     "graphs": ["/path/to/save/graph1.png", "/path/to/save/graph2.png"],
     "questions": ["Question 1", "Question 2", "Question 3"]
-    }}
+    
     
     Summary of the whole conversation:
     {{chat_history}}
     """
+    print(PREFIX)
 
     pd_agent = create_pandas_dataframe_agent(
         llm_code,
