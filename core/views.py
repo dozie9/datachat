@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -28,27 +29,29 @@ class DataUploadView(FormView):
         attachment = form.cleaned_data['attachment']
         query = 'Analyze the data and come up with a meaningful insight. Consider all columns.' # Illustrate this insight with a graph using matplotlib'
         try:
-            # print(response)
-            conversation = Conversation.objects.create(
-                attachment=attachment,
-                title='Test title',
-                user1=self.request.user
-            )
-            user_msg = Message.objects.create(
-                user=self.request.user,
-                conversation=conversation,
-                content=conversation.attachment.name.split('/',)[-1]
-            )
+            with transaction.atomic():
+                # print(response)
+                conversation = Conversation.objects.create(
+                    attachment=attachment,
+                    title='Test title',
+                    user1=self.request.user
+                )
+                user_msg = Message.objects.create(
+                    user=self.request.user,
+                    conversation=conversation,
+                    content=conversation.attachment.name.split('/',)[-1]
+                )
 
-            ai_msg = Message.objects.create(
-                # user=self.request.user,
-                conversation=conversation,
-                # content=conversation.attachment.name
-            )
-            response = langchain_helper.file_query(conversation.attachment.path, query, ai_msg)
-            ai_msg.content = response
-            ai_msg.save()
+                ai_msg = Message.objects.create(
+                    # user=self.request.user,
+                    conversation=conversation,
+                    # content=conversation.attachment.name
+                )
+                response = langchain_helper.file_query(conversation.attachment.path, '', ai_msg)
+                ai_msg.content = response
+                ai_msg.save()
         except (ValueError,) as e:
+            print(str(e))
             messages.warning(self.request, "Something went wrong please try again.")
             return redirect('/')
         # self.request.session['conversation_id'] = str(conversation.id)
