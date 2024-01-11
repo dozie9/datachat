@@ -193,7 +193,8 @@ def file_query(file_path, query, msg=None):
 
     if not query:
         query = 'Analyze the provided dataset [describe the dataset briefly] and present a detailed summary'
-    response = agent_mem.run(input=query, path_to_image=f"images/{msg.conversation.id}/{msg.id}")
+    # response = agent_mem.run(input=query, path_to_image=f"images/{msg.conversation.id}/{msg.id}")
+    response = agent_mem.invoke({'input': query, 'path_to_image': f"images/{msg.conversation.id}/{msg.id}"})
 
     return response
 
