@@ -68,8 +68,9 @@ def pd_agent_with_memory(llm_code, df, msg):
     You are working with a pandas dataframe in Python. The name of the dataframe is `df`.
     You should use the tools below to answer the question posed of you:
     
-    Make sure to always use matplotlib in non-GUI mode.
-    Generate visual graphs to illustrate key insights or trends, and save the graphs to "{path_to_image}" directory. 
+    In your analysis, please ensure that Matplotlib is utilized in non-GUI mode.
+    Generate visual graphs to illustrate key insights or trends, using Matplotlib without relying on a graphical user 
+    interface (GUI), and save the graphs to "{path_to_image}" directory. 
     
     Include the file paths of the generated graphs in your response. Format the response as follows:
     {{
