@@ -61,13 +61,22 @@ def get_memory(conversation_id):
     return memory
 
 
-def pd_agent_with_memory(llm_code, df, conversation_id):
-    memory = get_memory(conversation_id)
+def pd_agent_with_memory(llm_code, df, msg):
+    memory = get_memory(str(msg.conversation.id))
 
     PREFIX = """
     You are working with a pandas dataframe in Python. The name of the dataframe is `df`.
     You should use the tools below to answer the question posed of you:
-
+    
+    Generate visual graphs to illustrate key insights or trends, and save the graphs to "{path_to_image}" directory. 
+    Make sure to always use matplotlib in non-GUI mode.
+    Include the file paths of the generated graphs in your response. Format the response as follows:
+    {
+    "answer": "Your answer",
+    "graphs": ["/path/to/save/graph1.png", "/path/to/save/graph2.png"],
+    "questions": ["Question 1", "Question 2", "Question 3"]
+    }
+    
     Summary of the whole conversation:
     {chat_history}
     """
@@ -78,7 +87,7 @@ def pd_agent_with_memory(llm_code, df, conversation_id):
         prefix=PREFIX,
         verbose=True,
         agent_executor_kwargs={"memory": memory},
-        input_variables=['df_head', 'input', 'agent_scratchpad', 'chat_history'],
+        input_variables=['df_head', 'input', 'agent_scratchpad', 'chat_history', 'path_to_image'],
         handle_parsing_errors="Check your output and make sure it conforms! Do not output an action and a final answer at the same time."
     )
     return pd_agent
@@ -175,10 +184,28 @@ def file_query(file_path, query, msg=None):
     # agent = create_agent(file_path)
 
     df = get_dataframe(file_path)
-    agent_mem = pd_agent_with_memory(llm, df, str(msg.conversation.id))
+    agent_mem = pd_agent_with_memory(llm, df, msg)
 
     # response = query_agent(agent_mem, query, msg)
-    response = agent_mem.run(query)
+    # if not query:
+    #     query = (
+    #     f"""
+    #     For the following query, Analyze the provided dataset [describe the dataset briefly] and present a detailed summary. Additionally,
+    #     generate visual graphs to illustrate key insights or trends, and save the graphs to "images/{msg.conversation.id}/{msg.id}" directory.
+    #     Make sure to always use matplotlib in non-GUI mode.
+    #     Include the file paths of the generated graphs in your response. Format the response as follows:
+    #     {{
+    #     "answer": "Your comprehensive summary",
+    #     "graphs": ["/path/to/save/graph1.png", "/path/to/save/graph2.png"],
+    #     "questions": ["Question 1", "Question 2", "Question 3"]
+    #     }}
+    #     Below is the query.
+    #     Query:
+    #     """
+    # )
+    if not query:
+        query = 'Analyze the provided dataset [describe the dataset briefly] and present a detailed summary'
+    response = agent_mem.run(query, f"images/{msg.conversation.id}/{msg.id}")
 
     return response
 
