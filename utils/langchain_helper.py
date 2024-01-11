@@ -78,7 +78,8 @@ def pd_agent_with_memory(llm_code, df, conversation_id):
         prefix=PREFIX,
         verbose=True,
         agent_executor_kwargs={"memory": memory},
-        input_variables=['df_head', 'input', 'agent_scratchpad', 'chat_history']
+        input_variables=['df_head', 'input', 'agent_scratchpad', 'chat_history'],
+        handle_parsing_errors="Check your output and make sure it conforms! Do not output an action and a final answer at the same time."
     )
     return pd_agent
 
