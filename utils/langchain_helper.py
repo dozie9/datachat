@@ -70,7 +70,10 @@ def pd_agent_with_memory(llm_code, df, msg):
     
     In your analysis, please ensure that Matplotlib is utilized in non-GUI mode.
     Generate visual graphs to illustrate key insights or trends, using Matplotlib without relying on a graphical user 
-    interface (GUI), and save the graphs to "{path_to_image}" directory. 
+    interface (GUI), and save the graphs to "{path_to_image}" directory. eg:
+    import matplotlib as mpl
+    mpl.use('Agg')
+    import matplotlib.pyplot as plt
     
     Include the file paths of the generated graphs in your response. Format the response as follows:
     {{
