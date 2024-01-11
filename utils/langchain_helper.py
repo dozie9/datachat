@@ -68,14 +68,15 @@ def pd_agent_with_memory(llm_code, df, msg):
     You are working with a pandas dataframe in Python. The name of the dataframe is `df`.
     You should use the tools below to answer the question posed of you:
     
-    Generate visual graphs to illustrate key insights or trends, and save the graphs to "{path_to_image}" directory. 
     Make sure to always use matplotlib in non-GUI mode.
+    Generate visual graphs to illustrate key insights or trends, and save the graphs to "{path_to_image}" directory. 
+    
     Include the file paths of the generated graphs in your response. Format the response as follows:
-    {
+    {{
     "answer": "Your answer",
     "graphs": ["/path/to/save/graph1.png", "/path/to/save/graph2.png"],
     "questions": ["Question 1", "Question 2", "Question 3"]
-    }
+    }}
     
     Summary of the whole conversation:
     {chat_history}
@@ -186,26 +187,9 @@ def file_query(file_path, query, msg=None):
     df = get_dataframe(file_path)
     agent_mem = pd_agent_with_memory(llm, df, msg)
 
-    # response = query_agent(agent_mem, query, msg)
-    # if not query:
-    #     query = (
-    #     f"""
-    #     For the following query, Analyze the provided dataset [describe the dataset briefly] and present a detailed summary. Additionally,
-    #     generate visual graphs to illustrate key insights or trends, and save the graphs to "images/{msg.conversation.id}/{msg.id}" directory.
-    #     Make sure to always use matplotlib in non-GUI mode.
-    #     Include the file paths of the generated graphs in your response. Format the response as follows:
-    #     {{
-    #     "answer": "Your comprehensive summary",
-    #     "graphs": ["/path/to/save/graph1.png", "/path/to/save/graph2.png"],
-    #     "questions": ["Question 1", "Question 2", "Question 3"]
-    #     }}
-    #     Below is the query.
-    #     Query:
-    #     """
-    # )
     if not query:
         query = 'Analyze the provided dataset [describe the dataset briefly] and present a detailed summary'
-    response = agent_mem.run(query, path_to_image=f"images/{msg.conversation.id}/{msg.id}")
+    response = agent_mem.run(input=query, path_to_image=f"images/{msg.conversation.id}/{msg.id}")
 
     return response
 
