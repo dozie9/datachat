@@ -52,7 +52,8 @@ else:
 
 def get_memory(conversation_id):
     chat_message_history = SQLChatMessageHistory(
-        session_id=conversation_id, connection_string=f"sqlite:///{settings.BASE_DIR/'chat_history'/'chat.db'}"
+        session_id=conversation_id, connection_string=f"sqlite:///{settings.BASE_DIR / 'chat_history' / 'chat.db'}"
+
     )
 
     memory = ConversationBufferMemory(
