@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 from django.conf import settings
-from langchain.agents import AgentType, create_sql_agent
+from langchain.agents import AgentType, create_sql_agent, Tool, initialize_agent
 from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 from langchain.memory import ConversationBufferMemory
 from langchain.sql_database import SQLDatabase
@@ -15,6 +15,7 @@ from langchain_community.chat_models import ChatOpenAI
 from langchain_experimental.agents.agent_toolkits import create_csv_agent, create_pandas_dataframe_agent
 
 from dotenv import load_dotenv
+from langchain_experimental.sql import SQLDatabaseChain
 
 load_dotenv()
 
@@ -34,15 +35,15 @@ table = os.environ.get("TABLE") # "feed_prepared"
 if os.environ.get('ENVIRONMENT') == 'local':
     def load_llm():
         # Load the locally downloaded model here
-        # lm = CTransformers(
-        #     model=os.environ.get('MODEL'),
-        #     model_type="mistral",
-        #     config={'context_length': 4028, 'max_new_tokens': 2028},
-        #     # temperature=0,
-        #     model_kwargs={"temperature": 0.1, "max_length": 512}
-        # )
-        olla = Ollama(model='mistral')
-        return olla
+        lm = CTransformers(
+            model=os.environ.get('MODEL'),
+            model_type="mistral",
+            config={'context_length': 4028, 'max_new_tokens': 2028},
+            # temperature=0,
+            model_kwargs={"temperature": 0.1, "max_length": 512}
+        )
+        # olla = Ollama(model='mistral')
+        return lm
     llm = load_llm()
 else:
     # Create an OpenAI object.
@@ -259,6 +260,38 @@ def sql_query(query, table_name, msg):
 
     response = agent_executor.run(prompt)
     # print(response)
+    return response
+
+
+def db_query(query, table_name, msg):
+    project_id, dataset_id, table_name = table_name.split('.')
+    service_account_file = os.environ.get("G_SERVICE_KEY")
+    sqlalchemy_url = f'bigquery://{project_id}/{dataset_id}?credentials_path={service_account_file}'
+
+    # Set up langchain
+    db = SQLDatabase.from_uri(sqlalchemy_url)
+    # llm = OpenAI(temperature=0, model="text-davinci-003")
+    llm = ChatOpenAI(temperature=0, model="gpt-4-0613")
+    db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
+
+    tools = [
+        Tool(
+            name='dbchain',
+            func=db_chain.run,
+            description="Chat with SQLDB"
+        )
+    ]
+    memory = get_memory(str(msg.conversation.id))
+
+    agent_kwargs = {"memory": memory}
+    agent = initialize_agent(
+        tools,
+        llm,
+        agent_kwargs=agent_kwargs,
+        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        memory=memory
+    )
+    response = agent.run()
     return response
 
 

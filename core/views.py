@@ -4,7 +4,7 @@ from django.db import transaction
 from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import TemplateView, FormView, ListView, DeleteView
 
 from core.forms import DataUploadForm, QueryForm, DBForm
 from core.models import Conversation, Message
@@ -86,7 +86,7 @@ class FileChatView(FormView):
             # content=response
         )
         if conversation.data_type == Conversation.DB:
-            response = langchain_helper.sql_query(query, conversation.connection_string, ai_msg)
+            response = langchain_helper.db_query(query, conversation.connection_string, ai_msg)
         else:
             response = langchain_helper.file_query(ai_msg.conversation.attachment.path, query, ai_msg)
         ai_msg.content = response
@@ -133,7 +133,7 @@ class CreateDBConvoView(FormView):
             conversation=conversation,
             # content=conversation.attachment.name
         )
-        response = langchain_helper.sql_query(query, table_name, ai_msg)
+        response = langchain_helper.db_query(query, table_name, ai_msg)
         ai_msg.content = response
         ai_msg.save()
         # self.request.session['conversation_id'] = str(conversation.id)
@@ -147,3 +147,8 @@ class MessageListView(ListView):
     def get_queryset(self):
         conversation_id = self.kwargs.get('conversation_id')
         return Message.objects.filter(conversation__id=conversation_id)
+
+
+class DeleteConversationView(DeleteView):
+    model = Conversation
+    # template_name = 'core/delete_conversation.html'
